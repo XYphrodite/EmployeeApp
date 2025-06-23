@@ -10,5 +10,8 @@ public class AppDbContext : DbContext
     public DbSet<Position> Positions { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options)
-        : base(options) { }
+        : base(options)
+    {
+        Database.EnsureCreated();
+    }
 }
