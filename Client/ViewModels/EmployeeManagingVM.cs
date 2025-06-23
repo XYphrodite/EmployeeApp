@@ -9,6 +9,8 @@ namespace Client.ViewModels;
 
 public partial class EmployeeManagingVM : ObservableObject
 {
+    public event Action<int?>? OpenEditRequested;
+
     private readonly ApiService _apiService;
 
     [ObservableProperty]
@@ -30,11 +32,19 @@ public partial class EmployeeManagingVM : ObservableObject
         Employees = new ObservableCollection<EmployeeListModel>(list);
     }
 
+    [RelayCommand]
+    private void Add()
+    {
+        OpenEditRequested?.Invoke(null);
+    }
+
     [RelayCommand(CanExecute = nameof(CanEditOrDelete))]
     private void Edit()
     {
-        // Открыть окно редактирования
+        if (SelectedEmployee is not null)
+            OpenEditRequested?.Invoke(SelectedEmployee.Id);
     }
+
 
     [RelayCommand(CanExecute = nameof(CanEditOrDelete))]
     private async Task DeleteAsync()
@@ -44,6 +54,12 @@ public partial class EmployeeManagingVM : ObservableObject
             await _apiService.DeleteEmployeeAsync(SelectedEmployee.Id);
             await LoadEmployeesAsync();
         }
+    }
+
+    partial void OnSelectedEmployeeChanged(EmployeeListModel? value)
+    {
+        EditCommand.NotifyCanExecuteChanged();
+        DeleteCommand.NotifyCanExecuteChanged();
     }
 
     private bool CanEditOrDelete() => SelectedEmployee != null;

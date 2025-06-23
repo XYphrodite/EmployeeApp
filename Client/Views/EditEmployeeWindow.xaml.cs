@@ -16,8 +16,17 @@ public partial class EditEmployeeWindow : Window
         DataContext = _viewModel;
     }
 
-    public async Task InitializeAsync(int? employeeId, Action onSaved)
+    public async Task InitializeAsync(int? employeeId, Func<Task> onSaved)
     {
-        await _viewModel.InitializeAsync(employeeId, onSaved);
+        await _viewModel.InitializeAsync(employeeId, async () =>
+        {
+            await onSaved();
+            this.Close();
+        });
+    }
+
+    private void CancelButton_Click(object sender, RoutedEventArgs e)
+    {
+        this.Close();
     }
 }

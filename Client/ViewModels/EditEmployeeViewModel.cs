@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Client.Models;
 using Client.Services;
+using Shared.DTO;
 
 namespace Client.ViewModels;
 
@@ -16,11 +17,13 @@ public partial class EditEmployeeViewModel : ObservableValidator
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required]
+    [RegularExpression(@"^(?=.*[A-Za-zА-Яа-я])[A-Za-zА-Яа-я0-9]+$", ErrorMessage = "Имя должно содержать хотя бы одну букву.")]
     private string firstname = string.Empty;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
     [Required]
+    [RegularExpression(@"^(?=.*[A-Za-zА-Яа-я])[A-Za-zА-Яа-я0-9]+$", ErrorMessage = "Фамилия должна содержать хотя бы одну букву.")]
     private string surname = string.Empty;
 
     [ObservableProperty]
@@ -78,8 +81,11 @@ public partial class EditEmployeeViewModel : ObservableValidator
 
     private async Task LoadPositionsAsync()
     {
-        var list = await _apiService.GetPositionsAsync() as ObservableCollection<PositionModel>;
-        Positions = new ObservableCollection<PositionModel>(list);
+        var list = new ObservableCollection<PositionModel>();
+        foreach (var position in await _apiService.GetPositionsAsync())
+        {
+            Positions.Add(new PositionModel { Id = position.Id, PositionName = position.PositionName });
+        }
     }
 
     [RelayCommand]
@@ -88,7 +94,7 @@ public partial class EditEmployeeViewModel : ObservableValidator
         ValidateAllProperties();
         if (HasErrors) return;
 
-        var model = new EmployeeModel
+        var model = new EmployeeDto
         {
             Id = _employeeId ?? 0,
             Firstname = Firstname,

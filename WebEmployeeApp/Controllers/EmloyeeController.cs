@@ -43,7 +43,7 @@ public class EmployeeController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> Post(EmployeeDto dto)
+    public async Task<ActionResult> Post([FromBody] EmployeeDto dto)
     {
         var e = new Employee
         {

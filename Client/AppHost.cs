@@ -22,7 +22,7 @@ public static class HostBuilderExtensions
 
             // Windows
             services.AddSingleton<EmployeeManagingWindow>();
-            services.AddSingleton<EditEmployeeWindow>();
+            services.AddTransient<EditEmployeeWindow>();
         });
 
         return builder;

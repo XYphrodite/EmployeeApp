@@ -16,6 +16,8 @@ public partial class EmployeeManagingWindow : Window
         _viewModel = viewModel;
         DataContext = _viewModel;
         _services = services;
+
+        _viewModel.OpenEditRequested += OpenEditWindow;
     }
 
     private async void OpenEditWindow(int? employeeId)

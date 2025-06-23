@@ -5,8 +5,46 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Client.Views"
         mc:Ignorable="d"
-        Title="Редактирование сотрудника" Height="450" Width="800">
+        Title="Сотрудник" Height="450" Width="800">
     <Grid>
-        
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <StackPanel Margin="0 0 0 10">
+                <TextBlock Text="Имя *" Margin="0 5 0 0" />
+                <TextBox Text="{Binding Firstname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="0 0 0 10"/>
+
+
+                <TextBlock Text="Фамилия *" Margin="0 5 0 0" />
+                <TextBox Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="0 0 0 10"/>
+
+
+                <TextBlock Text="Отчество" Margin="0 5 0 0" />
+                <TextBox Text="{Binding Lastname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="0 0 0 10"/>
+
+                <TextBlock Text="Дата рождения" Margin="0 5 0 0" />
+                <DatePicker SelectedDate="{Binding Birthday}" Margin="0 5" />
+
+                <TextBlock Text="Должность *" Margin="0 5 0 0" />
+                <ComboBox ItemsSource="{Binding Positions}" 
+                      SelectedValue="{Binding PositionId}" 
+                      SelectedValuePath="Id" DisplayMemberPath="PositionName" 
+                      Margin="0 5"/>
+
+                <TextBlock Text="Зарплата *" Margin="0 5 0 0" />
+                <TextBox Text="{Binding Salary, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" Margin="0 0 0 10"/>
+
+                <CheckBox Content="Активен" IsChecked="{Binding IsActive}" Margin="0 5"/>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="5"/>
+                <Button Content="Отмена" Click="CancelButton_Click" Margin="5"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>

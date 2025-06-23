@@ -6,16 +6,17 @@
         xmlns:viewModels="clr-namespace:Client.ViewModels"
         xmlns:converters="clr-namespace:Client.Converters"
         Title="Список сотрудников" Height="450" Width="800">
-    <!--<Window.Resources>
+    <Window.Resources>
         <converters:BoolToYesNoConverter x:Key="BoolToYesNoConverter"/>
-    </Window.Resources>-->
+        <converters:NullToBool x:Key="NullToBool"/>
+    </Window.Resources>
     <DockPanel Margin="10">
-        <!--<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Left">
-            <Button Content="Добавить" Command="{Binding AddCommand}" Margin="0,0,10,0"/>
-            --><!--<Button Content="Редактировать" Command="{Binding EditCommand}" Margin="0 0 10 0" 
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Left">
+            <Button Content="Добавить" Command="{Binding AddCommand}"/>
+            <Button Content="Редактировать" Command="{Binding EditCommand}"
                     IsEnabled="{Binding SelectedEmployee, Converter={StaticResource NullToBool}}"/>
             <Button Content="Удалить" Command="{Binding DeleteCommand}" 
-                    IsEnabled="{Binding SelectedEmployee, Converter={StaticResource NullToBool}}"/>--><!--
+                    IsEnabled="{Binding SelectedEmployee, Converter={StaticResource NullToBool}}"/>
         </StackPanel>
         <DataGrid ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee, Mode=TwoWay}"
                   AutoGenerateColumns="False" CanUserAddRows="False">
@@ -23,8 +24,8 @@
                 <DataGridTextColumn Header="Имя" Binding="{Binding Firstname}" />
                 <DataGridTextColumn Header="Фамилия" Binding="{Binding Surname}" />
                 <DataGridTextColumn Header="Должность" Binding="{Binding PositionName}" />
-                --><!--<DataGridTextColumn Header="Активен" Binding="{Binding IsActive, Converter={StaticResource BoolToYesNoConverter}}" />--><!--
+                <DataGridTextColumn Header="Активен" Binding="{Binding IsActive, Converter={StaticResource BoolToYesNoConverter}}" />
             </DataGrid.Columns>
-        </DataGrid>-->
+        </DataGrid>
     </DockPanel>
 </Window>

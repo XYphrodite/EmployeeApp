@@ -22,10 +22,12 @@ public class ApiService
     public async Task<EmployeeModel> GetEmployeeAsync(int id)
         => await _client.GetFromJsonAsync<EmployeeModel>($"employee/{id}");
 
-    public async Task PostEmployeeAsync(EmployeeModel employee)
-        => await _client.PostAsJsonAsync("employee", employee);
+    public async Task PostEmployeeAsync(EmployeeDto employee)
+    {
+        var resp = await _client.PostAsJsonAsync("employee", employee);
+    }
 
-    public async Task PutEmployeeAsync(EmployeeModel employee)
+    public async Task PutEmployeeAsync(EmployeeDto employee)
         => await _client.PutAsJsonAsync($"employee/{employee.Id}", employee);
 
     public async Task DeleteEmployeeAsync(int id)
