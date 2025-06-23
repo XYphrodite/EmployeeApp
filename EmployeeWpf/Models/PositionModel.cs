@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Shared.DTO;
 
-namespace EmployeeWpf.Models
+namespace EmployeeWpf.Models;
+
+public class PositionModel : PositionDto
 {
-    internal class PositionModel : PositionDto
-    {
-    }
 }

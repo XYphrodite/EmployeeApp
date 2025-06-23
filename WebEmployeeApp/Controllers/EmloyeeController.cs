@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using EmployeeApp.Server.Data;
 using EmployeeApp.Server.Models;
-using EmployeeApp.Server.DTOs;
 using Shared.DTO;
+using WebEmployeeApp.Services;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -13,13 +12,14 @@ public class EmployeeController : ControllerBase
     public EmployeeController(AppDbContext context) => _context = context;
 
     [HttpGet]
-    public async Task<IEnumerable<EmployeeListDto>> GetAll()
+    public async Task<IEnumerable<EmployeeDto>> GetAll()
         => await _context.Employees.Include(e => e.Position)
-            .Select(e => new EmployeeListDto
+            .Select(e => new EmployeeDto
             {
                 Id = e.Id,
                 Firstname = e.Firstname,
                 Surname = e.Surname,
+                PositionId = e.Position.Id,
                 PositionName = e.Position.PositionName,
                 IsActive = e.IsActive
             }).ToListAsync();

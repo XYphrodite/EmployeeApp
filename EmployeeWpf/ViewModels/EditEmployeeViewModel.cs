@@ -10,9 +10,8 @@ namespace EmployeeWpf.ViewModels;
 public partial class EditEmployeeViewModel : ObservableValidator
 {
     private readonly ApiService _apiService;
-    private readonly Action _onSaved;
-
-    public bool IsEditMode { get; }
+    private Action? _onSaved;
+    private int? _employeeId;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
@@ -32,37 +31,37 @@ public partial class EditEmployeeViewModel : ObservableValidator
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
+    [Required]
     private short positionId;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
+    [Required]
+    [Range(0, int.MaxValue, ErrorMessage = "Зарплата должна быть положительным числом")]
     private int salary;
 
     [ObservableProperty]
     private bool isActive;
 
     [ObservableProperty]
-    public ObservableCollection<PositionModel> positions = [];
+    public ObservableCollection<PositionModel> positions = new();
 
-    public int? EmployeeId { get; }
+    public bool IsEditMode => _employeeId.HasValue;
 
-    public EditEmployeeViewModel(ApiService apiService, Action onSaved, int? employeeId = null)
+    public EditEmployeeViewModel(ApiService apiService)
     {
         _apiService = apiService;
-        _onSaved = onSaved;
-        EmployeeId = employeeId;
-        IsEditMode = employeeId.HasValue;
-        LoadDataCommand.Execute(null);
     }
 
-    [RelayCommand]
-    private async Task LoadDataAsync()
+    public async Task InitializeAsync(int? employeeId, Action onSaved)
     {
-        Positions = new ObservableCollection<PositionModel>(await _apiService.GetPositionsAsync());
+        _employeeId = employeeId;
+        _onSaved = onSaved;
+        await LoadPositionsAsync();
 
-        if (IsEditMode && EmployeeId.HasValue)
+        if (IsEditMode)
         {
-            var e = await _apiService.GetEmployeeAsync(EmployeeId.Value);
+            var e = await _apiService.GetEmployeeAsync(_employeeId!.Value);
             Firstname = e.Firstname;
             Surname = e.Surname;
             Lastname = e.Lastname;
@@ -71,6 +70,16 @@ public partial class EditEmployeeViewModel : ObservableValidator
             Salary = e.Salary;
             IsActive = e.IsActive;
         }
+        else
+        {
+            IsActive = true;
+        }
+    }
+
+    private async Task LoadPositionsAsync()
+    {
+        var list = await _apiService.GetPositionsAsync() as ObservableCollection<PositionModel>;
+        Positions = new ObservableCollection<PositionModel>(list);
     }
 
     [RelayCommand]
@@ -81,7 +90,7 @@ public partial class EditEmployeeViewModel : ObservableValidator
 
         var model = new EmployeeModel
         {
-            Id = EmployeeId ?? 0,
+            Id = _employeeId ?? 0,
             Firstname = Firstname,
             Surname = Surname,
             Lastname = Lastname,

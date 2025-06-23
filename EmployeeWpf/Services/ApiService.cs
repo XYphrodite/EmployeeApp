@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Net.Http.Json;
 using EmployeeWpf.Models;
 using Shared.DTO;
 
@@ -13,35 +14,24 @@ public class ApiService
         _client = new HttpClient();
         _client.BaseAddress = new Uri(BASE_ADDRESS);
     }
-    internal async Task DeleteEmployeeAsync(int id)
-    {
-        var resp = await _client.SendAsync();
-        throw new NotImplementedException();
-    }
 
-    internal async Task<IEnumerable<EmployeeModel>> GetEmployeesAsync()
-    {
-        var resp = await _client.SendAsync();
-        throw new NotImplementedException();
-    }
 
-    internal async Task GetEmployeeAsync(int value)
-    {
-        throw new NotImplementedException();
-    }
 
-    internal async Task<IEnumerable<PositionModel>> GetPositionsAsync()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<IEnumerable<EmployeeListModel>> GetEmployeesAsync()
+        => await _client.GetFromJsonAsync<IEnumerable<EmployeeListModel>>("employee");
 
-    internal async Task PutEmployeeAsync(EmployeeModel model)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<EmployeeModel> GetEmployeeAsync(int id)
+        => await _client.GetFromJsonAsync<EmployeeModel>($"employee/{id}");
 
-    internal async Task PostEmployeeAsync(EmployeeModel model)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task PostEmployeeAsync(EmployeeModel employee)
+        => await _client.PostAsJsonAsync("employee", employee);
+
+    public async Task PutEmployeeAsync(EmployeeModel employee)
+        => await _client.PutAsJsonAsync($"employee/{employee.Id}", employee);
+
+    public async Task DeleteEmployeeAsync(int id)
+        => await _client.DeleteAsync($"employee/{id}");
+
+    public async Task<IEnumerable<PositionDto>> GetPositionsAsync()
+        => await _client.GetFromJsonAsync<IEnumerable<PositionDto>>("position");
 }

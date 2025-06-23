@@ -9,6 +9,7 @@ public class EmployeeDto
     public string? Lastname { get; set; }
     public DateTime? Birthday { get; set; }
     public short PositionId { get; set; }
+    public string PositionName { get; set; }
     public int Salary { get; set; }
     public bool IsActive { get; set; }
 }

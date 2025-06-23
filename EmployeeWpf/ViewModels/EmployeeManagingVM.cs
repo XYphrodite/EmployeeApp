@@ -12,10 +12,10 @@ public partial class EmployeeManagingVM : ObservableObject
     private readonly ApiService _apiService;
 
     [ObservableProperty]
-    private ObservableCollection<EmployeeModel> employees = [];
+    private ObservableCollection<EmployeeListModel> employees = [];
 
     [ObservableProperty]
-    private EmployeeModel? selectedEmployee;
+    private EmployeeListModel? selectedEmployee;
 
     public EmployeeManagingVM(ApiService apiService)
     {
@@ -24,10 +24,10 @@ public partial class EmployeeManagingVM : ObservableObject
     }
 
     [RelayCommand]
-    private async Task LoadEmployeesAsync()
+    public  async Task LoadEmployeesAsync()
     {
         var list = await _apiService.GetEmployeesAsync();
-        Employees = new ObservableCollection<EmployeeModel>(list);
+        Employees = new ObservableCollection<EmployeeListModel>(list);
     }
 
     [RelayCommand(CanExecute = nameof(CanEditOrDelete))]
