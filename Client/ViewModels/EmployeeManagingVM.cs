@@ -62,5 +62,11 @@ public partial class EmployeeManagingVM : ObservableObject
         DeleteCommand.NotifyCanExecuteChanged();
     }
 
+    [RelayCommand] //double click
+    private void OpenEdit(EmployeeListModel employee)
+    {
+        OpenEditRequested?.Invoke(employee.Id);
+    }
+
     private bool CanEditOrDelete() => SelectedEmployee != null;
 }

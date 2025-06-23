@@ -1,6 +1,4 @@
-﻿using System.Net.Http;
-using System.Windows;
-using Client.Services;
+﻿using System.Windows;
 using Client.ViewModels;
 
 namespace Client.Views;
@@ -25,8 +23,11 @@ public partial class EditEmployeeWindow : Window
         });
     }
 
+
     private void CancelButton_Click(object sender, RoutedEventArgs e)
     {
         this.Close();
     }
 }
+
+

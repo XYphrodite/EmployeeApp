@@ -11,8 +11,6 @@ namespace Client.ViewModels;
 public partial class EditEmployeeViewModel : ObservableValidator
 {
     private readonly ApiService _apiService;
-    private Action? _onSaved;
-    private int? _employeeId;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
@@ -47,24 +45,34 @@ public partial class EditEmployeeViewModel : ObservableValidator
     private bool isActive;
 
     [ObservableProperty]
+    private int? employeeId;
+
+    [ObservableProperty]
+    private Action? onSavedCallback;
+
+    [ObservableProperty]
     public ObservableCollection<PositionModel> positions = new();
 
-    public bool IsEditMode => _employeeId.HasValue;
+    public bool IsEditMode => EmployeeId.HasValue;
 
     public EditEmployeeViewModel(ApiService apiService)
     {
         _apiService = apiService;
     }
 
-    public async Task InitializeAsync(int? employeeId, Action onSaved)
+    public void SetNavigationParameters(int? id, Action onSaved)
     {
-        _employeeId = employeeId;
-        _onSaved = onSaved;
+        EmployeeId = id;
+        OnSavedCallback = onSaved;
+    }
+
+    public async Task InitializeAsync()
+    {
         await LoadPositionsAsync();
 
         if (IsEditMode)
         {
-            var e = await _apiService.GetEmployeeAsync(_employeeId!.Value);
+            var e = await _apiService.GetEmployeeAsync(EmployeeId!.Value);
             Firstname = e.Firstname;
             Surname = e.Surname;
             Lastname = e.Lastname;
@@ -79,9 +87,15 @@ public partial class EditEmployeeViewModel : ObservableValidator
         }
     }
 
+    public async Task InitializeAsync(int? employeeId, Action onSaved)
+    {
+        SetNavigationParameters(employeeId, onSaved);
+        await InitializeAsync();
+    }
+
     private async Task LoadPositionsAsync()
     {
-        var list = new ObservableCollection<PositionModel>();
+        Positions.Clear();
         foreach (var position in await _apiService.GetPositionsAsync())
         {
             Positions.Add(new PositionModel { Id = position.Id, PositionName = position.PositionName });
@@ -96,7 +110,7 @@ public partial class EditEmployeeViewModel : ObservableValidator
 
         var model = new EmployeeDto
         {
-            Id = _employeeId ?? 0,
+            Id = EmployeeId ?? 0,
             Firstname = Firstname,
             Surname = Surname,
             Lastname = Lastname,
@@ -111,12 +125,14 @@ public partial class EditEmployeeViewModel : ObservableValidator
         else
             await _apiService.PostEmployeeAsync(model);
 
-        _onSaved?.Invoke();
+        if (OnSavedCallback != null)
+            OnSavedCallback.Invoke();
     }
 
     [RelayCommand]
-    private void Cancel()
+    private async Task CancelAsync()
     {
-        _onSaved?.Invoke();
+        if (OnSavedCallback != null)
+            OnSavedCallback.Invoke();
     }
 }

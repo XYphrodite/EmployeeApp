@@ -1,7 +1,10 @@
-﻿using System.Net.Http;
-using System.Net.Http.Json;
-using Client.Models;
+﻿using Client.Models;
+using Microsoft.Extensions.Options;
 using Shared.DTO;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Client.Services;
 
@@ -24,7 +27,8 @@ public class ApiService
 
     public async Task PostEmployeeAsync(EmployeeDto employee)
     {
-        var resp = await _client.PostAsJsonAsync("employee", employee);
+        //var json = JsonSerializer.Serialize(employee);
+        await _client.PostAsJsonAsync("employee", employee);
     }
 
     public async Task PutEmployeeAsync(EmployeeDto employee)

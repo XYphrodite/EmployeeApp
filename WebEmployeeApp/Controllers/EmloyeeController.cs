@@ -12,14 +12,13 @@ public class EmployeeController : ControllerBase
     public EmployeeController(AppDbContext context) => _context = context;
 
     [HttpGet]
-    public async Task<IEnumerable<EmployeeDto>> GetAll()
+    public async Task<IEnumerable<EmployeeLightDto>> GetAll()
         => await _context.Employees.Include(e => e.Position)
-            .Select(e => new EmployeeDto
+            .Select(e => new EmployeeLightDto
             {
                 Id = e.Id,
                 Firstname = e.Firstname,
                 Surname = e.Surname,
-                PositionId = e.Position.Id,
                 PositionName = e.Position.PositionName,
                 IsActive = e.IsActive
             }).ToListAsync();
@@ -45,23 +44,34 @@ public class EmployeeController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> Post([FromBody] EmployeeDto dto)
     {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
         var e = new Employee
         {
             Firstname = dto.Firstname,
             Surname = dto.Surname,
             Lastname = dto.Lastname,
-            Birthday = dto.Birthday,
+            Birthday = dto.Birthday.HasValue
+                    ? DateTime.SpecifyKind(dto.Birthday.Value, DateTimeKind.Utc)
+                    : null,
             PositionId = dto.PositionId,
             Salary = dto.Salary,
             IsActive = dto.IsActive
         };
         _context.Employees.Add(e);
-        await _context.SaveChangesAsync();
-        return CreatedAtAction(nameof(Get), new { id = e.Id }, e);
+        try
+        {
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(Get), new { id = e.Id }, e);
+        }
+        catch (Exception)
+        {
+            return BadRequest(ModelState);
+        }
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Put(int id, EmployeeDto dto)
+    public async Task<ActionResult> Put(int id, [FromBody] EmployeeDto dto)
     {
         if (id != dto.Id) return BadRequest();
         var e = await _context.Employees.FindAsync(id);
@@ -69,12 +79,21 @@ public class EmployeeController : ControllerBase
         e.Firstname = dto.Firstname;
         e.Surname = dto.Surname;
         e.Lastname = dto.Lastname;
-        e.Birthday = dto.Birthday;
+        e.Birthday = dto.Birthday.HasValue
+                    ? DateTime.SpecifyKind(dto.Birthday.Value, DateTimeKind.Utc)
+                    : null;
         e.PositionId = dto.PositionId;
         e.Salary = dto.Salary;
         e.IsActive = dto.IsActive;
-        await _context.SaveChangesAsync();
-        return NoContent();
+        try
+        {
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
+        catch (Exception)
+        {
+            return BadRequest(ModelState);
+        }
     }
 
     [HttpDelete("{id}")]

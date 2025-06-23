@@ -5,11 +5,15 @@
         xmlns:local="clr-namespace:Client.Views"
         xmlns:viewModels="clr-namespace:Client.ViewModels"
         xmlns:converters="clr-namespace:Client.Converters"
-        Title="Список сотрудников" Height="450" Width="800">
+        xmlns:behavior="clr-namespace:Client.Behaviors"
+        Title="Список сотрудников" Height="450" Width="800"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    >
     <Window.Resources>
         <converters:BoolToYesNoConverter x:Key="BoolToYesNoConverter"/>
         <converters:NullToBool x:Key="NullToBool"/>
     </Window.Resources>
+    
     <DockPanel Margin="10">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Left">
             <Button Content="Добавить" Command="{Binding AddCommand}"/>
@@ -20,8 +24,11 @@
         </StackPanel>
         <DataGrid ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee, Mode=TwoWay}"
                   AutoGenerateColumns="False" CanUserAddRows="False">
+            <i:Interaction.Behaviors>
+                <behavior:DataGridDoubleClickBehavior Command="{Binding OpenEditCommand}" />
+            </i:Interaction.Behaviors>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Имя" Binding="{Binding Firstname}" />
+                <DataGridTextColumn Header="Имя" Binding="{Binding Firstname}"/>
                 <DataGridTextColumn Header="Фамилия" Binding="{Binding Surname}" />
                 <DataGridTextColumn Header="Должность" Binding="{Binding PositionName}" />
                 <DataGridTextColumn Header="Активен" Binding="{Binding IsActive, Converter={StaticResource BoolToYesNoConverter}}" />

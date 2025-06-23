@@ -13,3 +13,12 @@ public class EmployeeDto
     public int Salary { get; set; }
     public bool IsActive { get; set; }
 }
+
+public class EmployeeLightDto
+{
+    public int Id { get; set; }
+    public string Firstname { get; set; }
+    public string Surname { get; set; }
+    public string? PositionName { get; set; }
+    public bool IsActive { get; set; }
+}
