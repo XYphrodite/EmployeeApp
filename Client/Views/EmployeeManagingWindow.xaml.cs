@@ -1,25 +1,20 @@
 ﻿using System.Windows;
 using System.Windows.Input;
-using EmployeeWpf.Services;
-using EmployeeWpf.ViewModels;
-using EmployeeWpf.Views;
+using Client.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EmployeeWpf.Views;
+namespace Client.Views;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
-public partial class MainWindow : Window
+public partial class EmployeeManagingWindow : Window
 {
     private readonly EmployeeManagingVM _viewModel;
     private readonly IServiceProvider _services;
 
-    public MainWindow(EmployeeManagingVM vm, IServiceProvider services)
+    public EmployeeManagingWindow(EmployeeManagingVM viewModel, IServiceProvider services)
     {
         InitializeComponent();
-        DataContext = vm;
-        _viewModel = vm;
+        _viewModel = viewModel;
+        DataContext = _viewModel;
         _services = services;
     }
 

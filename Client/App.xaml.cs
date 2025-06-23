@@ -1,9 +1,9 @@
-﻿using EmployeeApp.EmployeeWpf;
+﻿using Client.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Windows;
 
-namespace EmployeeWpf;
+namespace Client;
 
 /// <summary>
 /// Interaction logic for App.xaml
@@ -20,7 +20,7 @@ public partial class App : Application
 
         _host.Start();
 
-        var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+        var mainWindow = _host.Services.GetRequiredService<EmployeeManagingWindow>();
         mainWindow.Show();
 
         base.OnStartup(e);

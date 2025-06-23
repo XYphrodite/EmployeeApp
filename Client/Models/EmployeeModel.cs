@@ -1,6 +1,6 @@
 ﻿using Shared.DTO;
 
-namespace EmployeeWpf.Models;
+namespace Client.Models;
 
 public class EmployeeModel : EmployeeDto
 {

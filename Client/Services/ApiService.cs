@@ -1,20 +1,19 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Json;
-using EmployeeWpf.Models;
+using Client.Models;
 using Shared.DTO;
 
-namespace EmployeeWpf.Services;
+namespace Client.Services;
 
 public class ApiService
 {
     private readonly HttpClient _client;
-    const string BASE_ADDRESS = "";
+    const string BASE_ADDRESS = "http://localhost:5042/api/";
     public ApiService()
     {
         _client = new HttpClient();
         _client.BaseAddress = new Uri(BASE_ADDRESS);
     }
-
 
 
     public async Task<IEnumerable<EmployeeListModel>> GetEmployeesAsync()

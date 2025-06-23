@@ -1,6 +1,6 @@
-﻿using EmployeeWpf.Services;
-using EmployeeWpf.ViewModels;
-using EmployeeWpf.Views;
+﻿using Client.Services;
+using Client.ViewModels;
+using Client.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EmployeeWpf;
+namespace Client;
 
 public static class HostBuilderExtensions
 {
@@ -26,7 +26,7 @@ public static class HostBuilderExtensions
             services.AddTransient<EditEmployeeViewModel>();
 
             // Windows
-            services.AddSingleton<MainWindow>();
+            services.AddSingleton<EmployeeManagingWindow>();
             services.AddSingleton<EditEmployeeWindow>();
         });
 

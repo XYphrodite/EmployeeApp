@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace EmployeeWpf.Converters;
+namespace Client.Converters;
 
 public class BoolToYesNoConverter : IValueConverter
 {

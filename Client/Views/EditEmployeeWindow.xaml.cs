@@ -1,9 +1,9 @@
 ﻿using System.Net.Http;
 using System.Windows;
-using EmployeeWpf.Services;
-using EmployeeWpf.ViewModels;
+using Client.Services;
+using Client.ViewModels;
 
-namespace EmployeeWpf.Views;
+namespace Client.Views;
 
 public partial class EditEmployeeWindow : Window
 {

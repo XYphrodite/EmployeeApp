@@ -2,10 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using EmployeeWpf.Models;
-using EmployeeWpf.Services;
+using Client.Models;
+using Client.Services;
 
-namespace EmployeeWpf.ViewModels;
+namespace Client.ViewModels;
 
 public partial class EditEmployeeViewModel : ObservableValidator
 {
