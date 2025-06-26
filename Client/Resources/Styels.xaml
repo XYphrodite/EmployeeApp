@@ -3,7 +3,7 @@
 
     <Style TargetType="Button">
         <Setter Property="Margin" Value="10 5"/>
-        <Setter Property="Padding" Value="8 8"/>
+        <Setter Property="Padding" Value="8 0"/>
         <Setter Property="Background" Value="Gray"/>
         <Setter Property="Foreground" Value="Black"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
@@ -11,14 +11,5 @@
         <Setter Property="BorderBrush" Value="Black"/>
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="MinWidth" Value="128"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="Button">
-                    <Border Background="{TemplateBinding Background}" CornerRadius="4">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 </ResourceDictionary>

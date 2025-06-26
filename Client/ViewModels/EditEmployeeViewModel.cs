@@ -49,6 +49,8 @@ public partial class EditEmployeeViewModel : ObservableValidator
 
     [ObservableProperty]
     private Action? onSavedCallback;
+    [ObservableProperty]
+    private Action? onCancelCallback;
 
     [ObservableProperty]
     public ObservableCollection<PositionModel> positions = new();
@@ -60,10 +62,11 @@ public partial class EditEmployeeViewModel : ObservableValidator
         _apiService = apiService;
     }
 
-    public void SetNavigationParameters(int? id, Action onSaved)
+    public void SetNavigationParameters(int? id, Action onSaved, Action onCancel)
     {
         EmployeeId = id;
         OnSavedCallback = onSaved;
+        OnCancelCallback = onCancel;
     }
 
     public async Task InitializeAsync()
@@ -83,23 +86,20 @@ public partial class EditEmployeeViewModel : ObservableValidator
         }
         else
         {
-            IsActive = true;
+            IsActive = false;
         }
     }
 
-    public async Task InitializeAsync(int? employeeId, Action onSaved)
+    public async Task InitializeAsync(int? employeeId, Action onSaved, Action onCancel)
     {
-        SetNavigationParameters(employeeId, onSaved);
+        SetNavigationParameters(employeeId, onSaved, onCancel);
         await InitializeAsync();
     }
 
     private async Task LoadPositionsAsync()
     {
-        Positions.Clear();
         foreach (var position in await _apiService.GetPositionsAsync())
-        {
             Positions.Add(new PositionModel { Id = position.Id, PositionName = position.PositionName });
-        }
     }
 
     [RelayCommand]
@@ -125,14 +125,12 @@ public partial class EditEmployeeViewModel : ObservableValidator
         else
             await _apiService.PostEmployeeAsync(model);
 
-        if (OnSavedCallback != null)
-            OnSavedCallback.Invoke();
+        OnSavedCallback?.Invoke();
     }
 
     [RelayCommand]
-    private async Task CancelAsync()
+    private void Cancel()
     {
-        if (OnSavedCallback != null)
-            OnSavedCallback.Invoke();
+        OnCancelCallback?.Invoke();
     }
 }

@@ -19,14 +19,9 @@ public partial class EditEmployeeWindow : Window
         await _viewModel.InitializeAsync(employeeId, async () =>
         {
             await onSaved();
-            this.Close();
-        });
-    }
-
-
-    private void CancelButton_Click(object sender, RoutedEventArgs e)
-    {
-        this.Close();
+            Close();
+        }
+        , Close);
     }
 }
 

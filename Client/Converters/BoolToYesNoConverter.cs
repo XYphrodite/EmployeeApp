@@ -12,7 +12,7 @@ public class BoolToYesNoConverter : IValueConverter
         => throw new NotImplementedException();
 }
 
-[ValueConversion(typeof(object), typeof(bool))]
+
 public class NullToBool : IValueConverter
 {
     public bool Invert { get; set; } = false;

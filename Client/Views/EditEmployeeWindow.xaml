@@ -5,13 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
        
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:behavior="clr-namespace:Client.Behaviors"
         mc:Ignorable="d"
         Title="Сотрудник" Height="450" Width="800">
-    <!--<i:Interaction.Behaviors>
-        <local:InitEmployeeBehavior
-            EmployeeId="{Binding EmployeeId}"
-            OnSaved="{Binding OnSavedCallback}" />
-    </i:Interaction.Behaviors>-->
+    <i:Interaction.Behaviors>
+        <behavior:LoadDataOnLoadedBehavior Command="{Binding LoadDataCommand}" />
+    </i:Interaction.Behaviors>
     <Grid>
         <Grid Margin="10">
             <Grid.RowDefinitions>
@@ -48,8 +47,16 @@
             </StackPanel>
 
             <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Сохранить" Command="{Binding SaveCommand}" Margin="5"/>
-                <Button Content="Отмена" Click="CancelButton_Click" Margin="5"/>
+                <Button Content="Сохранить" Margin="5">
+                    <i:Interaction.Behaviors>
+                        <behavior:ButtonClickCommandBehavior Command="{Binding SaveCommand}" />
+                    </i:Interaction.Behaviors>
+                </Button>
+                <Button Content="Отмена" Margin="5">
+                    <i:Interaction.Behaviors>
+                        <behavior:ButtonClickCommandBehavior Command="{Binding CancelCommand}" />
+                    </i:Interaction.Behaviors>
+                </Button>
             </StackPanel>
         </Grid>
     </Grid>

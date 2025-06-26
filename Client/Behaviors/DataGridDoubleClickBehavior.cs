@@ -19,16 +19,16 @@ public class DataGridDoubleClickBehavior : Behavior<DataGrid>
     protected override void OnAttached()
     {
         base.OnAttached();
-        AssociatedObject.MouseDoubleClick += AssociatedObject_MouseDoubleClick;
+        AssociatedObject.MouseDoubleClick += OnMouseDoubleClick;
     }
 
     protected override void OnDetaching()
     {
         base.OnDetaching();
-        AssociatedObject.MouseDoubleClick -= AssociatedObject_MouseDoubleClick;
+        AssociatedObject.MouseDoubleClick -= OnMouseDoubleClick;
     }
 
-    private void AssociatedObject_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    private void OnMouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         var dataGrid = sender as DataGrid;
         if (dataGrid?.SelectedItem != null)

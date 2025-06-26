@@ -9,6 +9,9 @@
         Title="Список сотрудников" Height="450" Width="800"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     >
+    <i:Interaction.Behaviors>
+        <behavior:LoadDataOnLoadedBehavior Command="{Binding LoadDataCommand}" />
+    </i:Interaction.Behaviors>
     <Window.Resources>
         <converters:BoolToYesNoConverter x:Key="BoolToYesNoConverter"/>
         <converters:NullToBool x:Key="NullToBool"/>
@@ -16,11 +19,23 @@
     
     <DockPanel Margin="10">
         <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Left">
-            <Button Content="Добавить" Command="{Binding AddCommand}"/>
-            <Button Content="Редактировать" Command="{Binding EditCommand}"
-                    IsEnabled="{Binding SelectedEmployee, Converter={StaticResource NullToBool}}"/>
-            <Button Content="Удалить" Command="{Binding DeleteCommand}" 
-                    IsEnabled="{Binding SelectedEmployee, Converter={StaticResource NullToBool}}"/>
+            <Button Content="Добавить">
+                <i:Interaction.Behaviors>
+                    <behavior:ButtonClickCommandBehavior Command="{Binding AddCommand}" />
+                </i:Interaction.Behaviors>
+            </Button>
+            <Button Content="Редактировать"
+                    IsEnabled="{Binding SelectedEmployee, Converter={StaticResource NullToBool}}">
+                <i:Interaction.Behaviors>
+                    <behavior:ButtonClickCommandBehavior Command="{Binding EditCommand}" />
+                </i:Interaction.Behaviors>
+            </Button>
+            <Button Content="Удалить"
+                    IsEnabled="{Binding SelectedEmployee, Converter={StaticResource NullToBool}}">
+                <i:Interaction.Behaviors>
+                    <behavior:ButtonClickCommandBehavior Command="{Binding DeleteCommand}" />
+                </i:Interaction.Behaviors>
+            </Button>
         </StackPanel>
         <DataGrid ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee, Mode=TwoWay}"
                   AutoGenerateColumns="False" CanUserAddRows="False">
